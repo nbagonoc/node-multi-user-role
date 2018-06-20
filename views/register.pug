@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    .vertical-align
+        .vertical-align-element
+            .container
+                .row
+                    .col-lg-4.col-md-6.mx-auto
+                        h3.text-secondary.text-center.font-weight-light Sign-up
+                        ul.list-group
+                            != messages('message', locals)
+                            if errors
+                                each error, i in errors
+                                    li(class="list-group-item list-group-item-danger") #{error.msg}
+                        form(method="POST", action="/user/register")
+                            .form-group.mt-3
+                                input.form-control(name="email",type="text",placeholder="email")
+                            .form-group
+                                input.form-control(name="username",type="text",placeholder="username")
+                            .form-group
+                                input.form-control(name="password",type="password",placeholder="password")
+                            .form-group
+                                input.form-control(name="password2",type="password",placeholder="confirm password")
+                            input.btn.btn-outline-success.btn-block(type="submit",value="Register")

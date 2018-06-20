@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    .container
+        .row
+            .col-md-4
+                include sidebar
+            .col-md-8
+                ul.list-group
+                    != messages('message', locals)
+                    if errors
+                        each error, i in errors
+                            li(class="list-group-item list-group-item-danger") #{error.msg}
+                .card
+                    .card-header.text-capitalize Subscriber and admin page access
+                    .card-body
+                        span.font-weight-light welcome to the subscriber and admin page access

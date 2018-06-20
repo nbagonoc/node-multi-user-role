@@ -1,0 +1,9 @@
+ul.list-group.mb-3
+    li.list-group-item
+        a.text-dark(href='/user/dashboard') Dashboard
+    if user.role ==1
+        li.list-group-item
+            a.text-dark(href='/user/admin') Admin access only
+    if user.role ==1 || user.role ==0
+        li.list-group-item
+            a.text-dark(href='/user/subscriber') Admin and Subscriber Access

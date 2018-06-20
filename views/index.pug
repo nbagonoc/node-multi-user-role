@@ -1,0 +1,52 @@
+extends layout
+
+block content
+    .header
+        .header-text
+            h1.m-0.display-1.text-light Multi User Role
+            h2.m-0.font-weight-light.text-light a simple multi user role web applicaion using node
+    .container
+        ul.list-group
+            != messages('message', locals)
+            if errors
+                each error, i in errors
+                    li(class="list-group-item list-group-item-danger") #{error.msg}
+        .row
+            .col-md-4.mb-3
+                .card
+                    .card-body
+                        h2.mb-0.slabo Tech stack
+                    ul.list-group.list-group-flush
+                        li.list-group-item Backend: Node
+                        li.list-group-item Server: Express
+                        li.list-group-item Database: MongoDB
+                        li.list-group-item ODM: Mongoose
+                        li.list-group-item Templating Engine: Pug
+                        li.list-group-item DB hosted at: mLab
+                        li.list-group-item Production hosted at: Heroku
+                        li.list-group-item VCS: GIT, and GitHub
+                        li.list-group-item BcryptJS
+                        li.list-group-item Body-Parser
+                        li.list-group-item Connect-flash
+                        li.list-group-item Express-messages
+                        li.list-group-item Express-session
+                        li.list-group-item Express-validator
+                        li.list-group-item Passport
+                        li.list-group-item Passport-local
+            .col-md-4.mb-3
+                .card
+                    .card-body
+                        h2.mb-0.slabo Features
+                    ul.list-group.list-group-flush
+                        li.list-group-item User(subscriber) sign-up
+                        li.list-group-item Multi User(admin, subscriber) sign-in
+                        li.list-group-item Access Control
+            .col-md-4.mb-3
+                .card
+                    .card-body
+                        h2.mb-0.slabo Future improvement
+                    ul.list-group.list-group-flush
+                        li.list-group-item Extensive Validation
+                        li.list-group-item CRUD Functionalities via user roles
+                        li.list-group-item Convert to MEAN Stack
+                        li.list-group-item Move from session to JWT

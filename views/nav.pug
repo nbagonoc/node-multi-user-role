@@ -1,0 +1,21 @@
+nav.navbar.navbar-expand-md.navbar-light.bg-light.border-bottom.mb-3
+    .container
+        a.navbar-brand(href='/') MultiUserRole
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
+            span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+            ul.navbar-nav
+                li.nav-item
+                    a.nav-link(href='/') Home
+            ul.navbar-nav.ml-auto
+                if user
+                    li.nav-item.dropdown
+                        a.nav-link.dropdown-toggle(href='#' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") #{user.username}
+                        div.dropdown-menu(aria-labelledby="navbarDropdownMenuLink")
+                            a.dropdown-item(href='/user/dashboard') Dashboard
+                            a.dropdown-item(href='/user/logout') Logout
+                else
+                    li.nav-item
+                        a.nav-link(href='/user/register') Register
+                    li.nav-item
+                        a.nav-link(href='/user/login') Login
