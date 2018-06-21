@@ -16,14 +16,9 @@ router.get("/register", (req, res) => {
 
 // POST | Register a user
 router.post("/register", (req, res) => {
-  // const name = req.body.name;
-  const email = req.body.email;
-  const username = req.body.username;
-  const password = req.body.password;
-  const password2 = req.body.password2;
+  const { email, username, password, password2 } = req.body;
 
   // validator
-  // req.checkBody("name", "Name is required").notEmpty();
   req.checkBody("email", "Email is required").notEmpty();
   req.checkBody("email", "Email is not valid").isEmail();
   req.checkBody("username", "Username is required").notEmpty();
@@ -33,34 +28,45 @@ router.post("/register", (req, res) => {
     .equals(req.body.password);
 
   const errors = req.validationErrors();
-  if (errors) {
-    res.render("register", {
-      errors: errors
-    });
-  } else {
-    const newUser = new User({
-      // name: name,
-      email: email,
-      username: username,
-      password: password
-    });
 
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(newUser.password, salt, (err, hash) => {
-        if (err) {
-          console.log(err);
-        }
-        newUser.password = hash;
-        newUser.save(err => {
-          if (err) {
-            console.log(err);
-            return;
+  if (errors) {
+    res.render("register", { errors, email, username, password, password2 });
+  } else {
+    User.findOne({ email: req.body.email }).then(data => {
+      if (data) {
+        req.flash("danger", "Email already exist");
+        res.render("register", { email, username, password, password2 });
+      } else {
+        User.findOne({ username: req.body.username }).then(data => {
+          if (data) {
+            req.flash("danger", "Username already exist");
+            res.render("register", { email, username, password, password2 });
           } else {
-            req.flash("success", "You have successfully registered");
-            res.redirect("/user/login");
+            const newUser = new User({
+              email,
+              username,
+              password
+            });
+            bcrypt.genSalt(10, function(err, salt) {
+              bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if (err) {
+                  console.log(err);
+                }
+                newUser.password = hash;
+                newUser.save(err => {
+                  if (err) {
+                    console.log(err);
+                    return;
+                  } else {
+                    req.flash("success", "You have successfully registered");
+                    res.redirect("/user/login");
+                  }
+                });
+              });
+            });
           }
         });
-      });
+      }
     });
   }
 });

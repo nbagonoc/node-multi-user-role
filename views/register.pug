@@ -14,11 +14,11 @@ block content
                                     li(class="list-group-item list-group-item-danger") #{error.msg}
                         form(method="POST", action="/user/register")
                             .form-group.mt-3
-                                input.form-control(name="email",type="text",placeholder="email")
+                                input.form-control(name="email",type="text",placeholder="email",value=email)
                             .form-group
-                                input.form-control(name="username",type="text",placeholder="username")
+                                input.form-control(name="username",type="text",placeholder="username", value=username)
                             .form-group
-                                input.form-control(name="password",type="password",placeholder="password")
+                                input.form-control(name="password",type="password",placeholder="password", value=password)
                             .form-group
-                                input.form-control(name="password2",type="password",placeholder="confirm password")
+                                input.form-control(name="password2",type="password",placeholder="confirm password", value=password2)
                             input.btn.btn-outline-success.btn-block(type="submit",value="Register")

@@ -14,7 +14,7 @@ block content
                                     li(class="list-group-item list-group-item-danger") #{error.msg}
                         form(method="POST", action="/user/login")
                             .form-group
-                                input.form-control(name="username",type="text",placeholder="username")
+                                input.form-control(name="username",type="text",placeholder="username", value=username)
                             .form-group
                                 input.form-control(name="password",type="password",placeholder="password")
                             input.btn.btn-outline-success.btn-block(type="submit",value="Sign-In")
