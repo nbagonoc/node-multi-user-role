@@ -30,18 +30,24 @@ router.post("/register", (req, res) => {
   const errors = req.validationErrors();
 
   if (errors) {
+    // return values, and do not create the user
     res.render("register", { errors, email, username, password, password2 });
   } else {
+    // values are valid, check email from DB
     User.findOne({ email: req.body.email }).then(data => {
       if (data) {
+        // email already exist
         req.flash("danger", "Email already exist");
         res.render("register", { email, username, password, password2 });
       } else {
+        // values are valid, check username from DB
         User.findOne({ username: req.body.username }).then(data => {
           if (data) {
+            // username already exist
             req.flash("danger", "Username already exist");
             res.render("register", { email, username, password, password2 });
           } else {
+            // create user
             const newUser = new User({
               email,
               username,
