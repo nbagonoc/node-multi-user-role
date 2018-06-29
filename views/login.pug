@@ -7,12 +7,12 @@ block content
                 .row
                     .col-lg-4.col-md-6.mx-auto
                         h3.text-center.text-secondary.font-weight-light Sign-in
-                        ul.list-group
-                            != messages('message', locals)
-                            if errors
+                        != messages('message', locals)
+                        if errors
+                            ul.list-group
                                 each error, i in errors
                                     li(class="list-group-item list-group-item-danger") #{error.msg}
-                        form(method="POST", action="/user/login")
+                        form(method="POST", action="/users/login")
                             .form-group
                                 input.form-control(name="username",type="text",placeholder="username", value=username)
                             .form-group

@@ -1,0 +1,32 @@
+extends layout
+
+block content
+    .container
+        .row
+            .col-md-4
+                include sidebar
+            .col-md-8
+                ul.list-group
+                    != messages('message', locals)
+                    if errors
+                        each error, i in errors
+                            li(class="list-group-item list-group-item-danger") #{error.msg}
+                .card
+                    .card-header.text-capitalize user list
+                    .card-body
+                        table.table
+                            thead
+                                tr
+                                    th Username
+                                    th Email
+                                    th Actions
+                            tbody
+                                each user, i in users
+                                    tr
+                                        td #{user.username}
+                                        td #{user.email}
+                                        td
+                                            a.btn.btn-outline-success.btn-sm.mr-1.float-left(href=`/users/profile/${user.id}`) View
+                                            a.btn.btn-outline-warning.btn-sm.mr-1.float-left(href=`/users/edit/${user.id}`) Edit
+                                            form(action=`/users/delete/${user.id}?_method=DELETE` method="post" class="float-left")
+                                                button(type="submit" class="btn btn-outline-danger btn-sm") Delete

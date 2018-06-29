@@ -1,9 +1,13 @@
 ul.list-group.mb-3
     li.list-group-item
-        a.text-dark(href='/user/dashboard') Dashboard
+        a.text-dark(href='/users/dashboard') Dashboard
+    li.list-group-item
+        a.text-dark(href=`/users/profile/${user.id}`) Profile
     if user.role ==1
         li.list-group-item
-            a.text-dark(href='/user/admin') Admin access only
+            a.text-dark(href='/users') Users
+        li.list-group-item
+            a.text-dark(href='/users/admin') Admin access only
     if user.role ==1 || user.role ==0
         li.list-group-item
-            a.text-dark(href='/user/subscriber') Admin and Subscriber Access
+            a.text-dark(href='/users/subscriber') Admin and Subscriber Access

@@ -5,7 +5,7 @@ module.exports = {
       return next();
     } else {
       req.flash("danger", "Please login");
-      res.redirect("/user/login");
+      res.redirect("/users/login");
     }
   },
   // checks the current user if admin
@@ -14,7 +14,7 @@ module.exports = {
       return next();
     } else {
       req.flash("danger", "Not Authorized");
-      res.redirect("/");
+      res.redirect("/users/dashboard");
     }
   }
 };

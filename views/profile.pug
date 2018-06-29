@@ -1,0 +1,37 @@
+extends layout
+
+block content
+    .container
+        .row
+            .col-md-4
+                include sidebar
+            .col-md-8
+                ul.list-group
+                    != messages('message', locals)
+                    if errors
+                        each error, i in errors
+                            li(class="list-group-item list-group-item-danger") #{error.msg}
+                .card
+                    .card-header.text-capitalize profile
+                    .card-body
+                        dl.row
+                            dt.col-sm-3 Username:
+                            dd.col-sm-9 #{data.username}
+                            dt.col-sm-3 Email:
+                            dd.col-sm-9 #{data.email}
+                            dt.col-sm-3 First Name:
+                            dd.col-sm-9 #{data.fname}
+                            dt.col-sm-3 Last Name:
+                            dd.col-sm-9 #{data.lname}
+                            dt.col-sm-3 Address:
+                            dd.col-sm-9 #{data.address}
+                            dt.col-sm-3 Phone:
+                            dd.col-sm-9 #{data.phone}
+                            
+                        //- p.font-weight-light Username: #{data.username}
+                        //- p.font-weight-light Email: #{data.email}
+                        //- p.font-weight-light First Name: #{data.fname}
+                        //- p.font-weight-light Last Name: #{data.lname}
+                        //- p.font-weight-light Address: #{data.address}
+                        //- p.font-weight-light Phone: #{data.phone}
+                        a.btn.btn-outline-success.btn-sm(href=`/users/edit/${data.id}`) Edit profile

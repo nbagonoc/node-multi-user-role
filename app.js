@@ -14,8 +14,6 @@ const app = express();
 // static public directory
 app.use(express.static(path.join(__dirname, "public")));
 
-// Bring in models
-
 // bring in db_secret config file
 const db_secret = require("./config/db_secret");
 // passport config
@@ -62,7 +60,7 @@ app.use(passport.session());
 app.use(expressValidator());
 
 // Global user
-app.get("*", function(req, res, next) {
+app.use((req, res, next) => {
   res.locals.user = req.user || null;
   next();
 });
@@ -73,8 +71,8 @@ app.get("/", (req, res) => {
 });
 
 // bring in route files
-const user = require("./routes/user");
-app.use("/user", user);
+const users = require("./routes/users");
+app.use("/users", users);
 
 // set port
 const port = process.env.PORT || 5000;

@@ -14,6 +14,20 @@ router.get("/register", (req, res) => {
   res.render("register");
 });
 
+// GET | view all users
+router.get("/", ensureAuthenticated, isAdmin, (req, res) => {
+  User.find({ role: 0 })
+    .sort({ _id: -1 })
+    .then(users => {
+      res.render("users", { users });
+    })
+    .catch(err => {
+      if (err) {
+        console.log(err);
+      }
+    });
+});
+
 // POST | Register a user
 router.post("/register", (req, res) => {
   const { email, username, password, password2 } = req.body;
@@ -65,7 +79,7 @@ router.post("/register", (req, res) => {
                     return;
                   } else {
                     req.flash("success", "You have successfully registered");
-                    res.redirect("/user/login");
+                    res.redirect("/users/login");
                   }
                 });
               });
@@ -77,6 +91,77 @@ router.post("/register", (req, res) => {
   }
 });
 
+// GET | edit user page
+router.get("/edit/:id", ensureAuthenticated, (req, res) => {
+  User.findOne({ _id: req.params.id })
+    .then(data => {
+      if (data.id == req.user._id || req.user.role === 1) {
+        res.render("edit", { data });
+      } else {
+        req.flash("danger", "Not Authorized");
+        return res.redirect("/users/dashboard");
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+// PATCH | edit user process
+router.patch("/edit/:id", ensureAuthenticated, (req, res) => {
+  User.findOne({ _id: req.params.id })
+    .then(data => {
+      data.fname = req.body.fname;
+      data.lname = req.body.lname;
+      data.address = req.body.address;
+      data.phone = req.body.phone;
+
+      // validator
+      req.check("fname", "first name is required").notEmpty();
+      req.check("lname", "last name is required").notEmpty();
+      req.check("address", "address is required").notEmpty();
+      req.check("phone", "phone is required").notEmpty();
+      req.check("phone", "phone is not valid").isInt();
+      req
+        .check("phone", "phone must be 11 characters")
+        .isLength({ min: 11, max: 11 });
+
+      const errors = req.validationErrors();
+
+      if (errors) {
+        res.render("edit", { errors, data });
+      } else {
+        data
+          .save()
+          .then(updated => {
+            req.flash("success", "Successfully edited profile");
+            res.redirect(`/users/profile/${data.id}`);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+// DELETE | delete process
+router.delete("/delete/:id", ensureAuthenticated, isAdmin, (req, res) => {
+  User.findOne({ _id: req.params.id })
+    .then(user => {
+      user.remove();
+      req.flash("success", "Successfully removed user");
+      res.redirect("/users");
+    })
+    .catch(err => {
+      if (err) {
+        console.log(err);
+      }
+    });
+});
+
 // GET | login route
 router.get("/login", (req, res) => {
   res.render("login");
@@ -85,8 +170,8 @@ router.get("/login", (req, res) => {
 // POST | login process
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", {
-    successRedirect: "/user/dashboard",
-    failureRedirect: "/user/login",
+    successRedirect: "/users/dashboard",
+    failureRedirect: "/users/login",
     failureFlash: true
   })(req, res, next);
 });
@@ -94,6 +179,24 @@ router.post("/login", (req, res, next) => {
 // GET | Dashboard
 router.get("/dashboard", ensureAuthenticated, (req, res) => {
   res.render("dashboard");
+});
+
+// GET | Profile
+router.get("/profile/:id", ensureAuthenticated, (req, res) => {
+  User.findOne({ _id: req.params.id })
+    .then(data => {
+      if (data.id == req.user._id || req.user.role === 1) {
+        res.render("profile", { data });
+      } else {
+        req.flash("danger", "Not Authorized");
+        return res.redirect("/users/dashboard");
+      }
+    })
+    .catch(err => {
+      if (err) {
+        console.log(err);
+      }
+    });
 });
 
 // GET | Admin Menu Page
@@ -110,7 +213,7 @@ router.get("/subscriber", ensureAuthenticated, (req, res) => {
 router.get("/logout", (req, res) => {
   req.logout();
   req.flash("success", "You are logged out");
-  res.redirect("/user/login");
+  res.redirect("/users/login");
 });
 
 module.exports = router;

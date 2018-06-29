@@ -1,0 +1,29 @@
+extends layout
+
+block content
+    .container
+        .row
+            .col-md-4
+                include sidebar
+            .col-md-8
+                != messages('message', locals)
+                if errors
+                    ul.list-group.mb-3
+                        each error, i in errors
+                            li(class="list-group-item list-group-item-danger") #{error.msg}
+                .card
+                    .card-header.text-capitalize edit profile
+                    .card-body
+                        form(method="POST", action=`/users/edit/${data.id}?_method=PATCH`)
+                            input(type="hidden" name="_method" value="PATCH")
+                            .form-row
+                                .form-group.col-sm
+                                    input.form-control(name="fname", type="text", placeholder="first name", value=data.fname)
+                                .form-group.col-sm
+                                    input.form-control(name="lname", type="text", placeholder="last name", value=data.lname)
+                            .form-row
+                                .form-group.col-sm-8
+                                    input.form-control(name="address", type="text", placeholder="address", value=data.address)
+                                .form-group.col-sm-4
+                                    input.form-control(name="phone", type="text", placeholder="phone", value=data.phone)
+                            input.btn.btn-outline-success.btn-sm(type="submit",value="Submit")
