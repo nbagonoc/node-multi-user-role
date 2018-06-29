@@ -6,8 +6,3 @@ ul.list-group.mb-3
     if user.role ==1
         li.list-group-item
             a.text-dark(href='/users') Users
-        li.list-group-item
-            a.text-dark(href='/users/admin') Admin access only
-    if user.role ==1 || user.role ==0
-        li.list-group-item
-            a.text-dark(href='/users/subscriber') Admin and Subscriber Access

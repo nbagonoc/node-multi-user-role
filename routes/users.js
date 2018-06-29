@@ -199,16 +199,6 @@ router.get("/profile/:id", ensureAuthenticated, (req, res) => {
     });
 });
 
-// GET | Admin Menu Page
-router.get("/admin", ensureAuthenticated, isAdmin, (req, res) => {
-  res.render("admin");
-});
-
-// GET | User Menu Page
-router.get("/subscriber", ensureAuthenticated, (req, res) => {
-  res.render("subscriber");
-});
-
 // GET | logout route
 router.get("/logout", (req, res) => {
   req.logout();
